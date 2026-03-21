@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
 B3 Intraday Scraper - GitHub Actions Edition
-Formatação compatível com AmiBroker (Ticker em todas as linhas)
+Corrigido: Conversão correta UTC → BRT (Brasília)
 """
 
 import yfinance as yf
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
 import os
 import sys
 import json
@@ -18,7 +18,6 @@ class B3GitHubScraper:
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
         
-        # Lista de ativos da B3 para monitorar
         self.default_tickers = [
             'PETR4', 'VALE3', 'ITUB4', 'BBDC4', 'ABEV3',
             'WEGE3', 'RENT3', 'LREN3', 'PRIO3', 'SUZB3',
@@ -28,7 +27,6 @@ class B3GitHubScraper:
         self.config = self._load_config()
     
     def _load_config(self):
-        """Carrega configuração de ativos via arquivo JSON ou env var"""
         config_file = Path("config/tickers.json")
         if config_file.exists():
             with open(config_file) as f:
@@ -41,22 +39,20 @@ class B3GitHubScraper:
         return {'tickers': self.default_tickers}
     
     def get_ticker_yf(self, ticker_b3):
-        """Converte para formato Yahoo Finance"""
         return f"{ticker_b3.upper()}.SA"
     
     def fetch_intraday(self, ticker, interval='5m', max_retries=3):
         """
-        Busca dados com retry logic para robustez em CI/CD
+        Busca dados e converte de UTC para BRT (Brasília)
         """
         ticker_yf = self.get_ticker_yf(ticker)
         
-        # Define período baseado no intervalo (limites Yahoo Finance)
         period_map = {
-            '1m': '5d',    # 7 dias max, mas usamos 5 para segurança
-            '5m': '20d',   # 60 dias max
+            '1m': '5d',
+            '5m': '20d',
             '15m': '30d',
             '30m': '60d',
-            '1h': '730d'   # 2 anos
+            '1h': '730d'
         }
         period = period_map.get(interval, '5d')
         
@@ -77,15 +73,36 @@ class B3GitHubScraper:
                     print(f"⚠️ Sem dados para {ticker}")
                     return None
                 
-                # Ajusta colunas MultiIndex do yfinance
+                # Ajusta colunas MultiIndex
                 if isinstance(data.columns, pd.MultiIndex):
                     data.columns = data.columns.get_level_values(0)
                 
-                # Remove timezone
-                if data.index.tz is not None:
-                    data.index = data.index.tz_localize(None)
+                # ============================================================
+                # CORREÇÃO DO FUSO HORÁRIO: UTC → BRT (Brasília)
+                # ============================================================
+                
+                # O Yahoo Finance retorna dados em UTC
+                # B3 opera 10:00-17:00 BRT = 13:00-20:00 UTC
+                
+                if data.index.tz is None:
+                    # Assume UTC se não tiver timezone
+                    data.index = data.index.tz_localize('UTC')
+                
+                # Converte para BRT (Brasília, UTC-3)
+                data.index = data.index.tz_convert('America/Sao_Paulo')
+                
+                # Remove timezone mantendo a hora local (BRT)
+                data.index = data.index.tz_localize(None)
+                
+                # ============================================================
+                
+                # Filtra apenas horário de pregão (10:00 - 17:00 BRT)
+                # Descomente se quiser apenas pregão regular:
+                # data = data.between_time('10:00', '17:00')
                 
                 print(f"✅ {ticker}: {len(data)} registros ({data.index[0]} a {data.index[-1]})")
+                print(f"   Horário: {data.index[0].strftime('%H:%M')} - {data.index[-1].strftime('%H:%M')} BRT")
+                
                 return data
                 
             except Exception as e:
@@ -98,80 +115,65 @@ class B3GitHubScraper:
     
     def export_amibroker_format(self, df, ticker, interval='5m'):
         """
-        Exporta no formato ASCII compatível com AmiBroker
-        Formato: Ticker, Date, Time, Open, High, Low, Close, Volume
-        
-        IMPORTANTE: Ticker é obrigatório em todas as linhas para importação correta!
+        Exporta no formato ASCII: Ticker, Date, Time, Open, High, Low, Close, Volume
+        Agora com horário BRT correto (10:00 início do pregão)
         """
         if df is None or df.empty:
             return None
         
         df_export = df.copy()
         
-        # Garante colunas necessárias
         required = ['Open', 'High', 'Low', 'Close', 'Volume']
         if not all(col in df_export.columns for col in required):
             print(f"❌ Colunas necessárias não encontradas em {ticker}")
             return None
         
-        # ============================================================
-        # ADICIONA TICKER EM TODAS AS LINHAS (ESSENCIAL PARA AMIBROKER)
-        # ============================================================
+        # Adiciona Ticker em todas as linhas
         df_export.insert(0, 'Ticker', ticker.upper())
         
-        # Formata data e hora
+        # Formata data e hora (já em BRT)
         df_export['Date'] = df_export.index.strftime('%Y-%m-%d')
         df_export['Time'] = df_export.index.strftime('%H:%M:%S')
         
         # Reordena: Ticker, Date, Time, Open, High, Low, Close, Volume
         df_export = df_export[['Ticker', 'Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume']]
         
-        # Nome do arquivo
+        # Salva arquivo do dia
         date_suffix = datetime.now().strftime('%Y%m%d')
         filename = f"{ticker}_{interval}_{date_suffix}.txt"
         filepath = self.data_dir / filename
         
-        # Exporta sem cabeçalho (formato AmiBroker puro)
         df_export.to_csv(filepath, index=False, header=False, sep=',')
         
-        # ============================================================
-        # CONSOLIDADO COM TICKER EM TODAS AS LINHAS
-        # ============================================================
+        # Atualiza consolidated
         consolidated = self.data_dir / f"{ticker}_{interval}_consolidated.txt"
-        
-        # Se arquivo existe, carrega e remove duplicatas de data/hora
         if consolidated.exists():
-            existing = pd.read_csv(consolidated, header=None, names=['Ticker', 'Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume'])
+            existing = pd.read_csv(consolidated, header=None, 
+                                 names=['Ticker', 'Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume'])
             combined = pd.concat([existing, df_export], ignore_index=True)
-            # Remove duplicatas baseado em Date + Time (mantém último)
             combined = combined.drop_duplicates(subset=['Date', 'Time'], keep='last')
             combined.to_csv(consolidated, index=False, header=False, sep=',')
         else:
             df_export.to_csv(consolidated, index=False, header=False, sep=',')
         
-        print(f"💾 Salvo: {filename} ({len(df)} linhas) | Ticker em todas as linhas ✅")
+        print(f"💾 Salvo: {filename} ({len(df)} linhas) | Horário BRT ✅")
         return filepath
     
     def generate_unified_file(self, all_data, interval='5m'):
-        """
-        Gera arquivo unificado com todos os tickers (multi-asset)
-        Formato: Ticker, Date, Time, Open, High, Low, Close, Volume
-        """
+        """Gera arquivo unificado com todos os tickers"""
         if not all_data:
             return None
         
         unified_df = pd.concat(all_data.values(), ignore_index=True)
-        
-        # Ordena por Ticker e Data/Hora
         unified_df = unified_df.sort_values(['Ticker', 'Date', 'Time'])
         
         filename = f"UNIFIED_ALL_{interval}_{datetime.now().strftime('%Y%m%d')}.txt"
         filepath = self.data_dir / filename
         
         unified_df.to_csv(filepath, index=False, header=False, sep=',')
-        print(f"🗂️  Arquivo unificado criado: {filename} ({len(unified_df)} registros totais)")
+        print(f"🗂️  Arquivo unificado: {filename} ({len(unified_df)} registros)")
         
-        # Atualiza consolidated unificado
+        # Consolidado unificado
         consolidated_unified = self.data_dir / f"UNIFIED_ALL_{interval}_consolidated.txt"
         if consolidated_unified.exists():
             existing = pd.read_csv(consolidated_unified, header=None, 
@@ -200,9 +202,9 @@ class B3GitHubScraper:
                 summary['success'].append({
                     'ticker': ticker,
                     'records': len(df),
-                    'date_range': f"{df.index[0]} a {df.index[-1]}"
+                    'date_range': f"{df.index[0]} a {df.index[-1]}",
+                    'time_range': f"{df.index[0].strftime('%H:%M')} - {df.index[-1].strftime('%H:%M')} BRT"
                 })
-                # Guarda para arquivo unificado
                 df_copy = df.copy()
                 df_copy.insert(0, 'Ticker', ticker.upper())
                 df_copy['Date'] = df_copy.index.strftime('%Y-%m-%d')
@@ -212,26 +214,21 @@ class B3GitHubScraper:
             else:
                 summary['failed'].append(ticker)
         
-        # Salva JSON de resumo
         summary_file = self.data_dir / f"summary_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(summary_file, 'w') as f:
             json.dump(summary, f, indent=2, default=str)
         
-        # Gera arquivo unificado se houver dados
         if all_data:
             self.generate_unified_file(all_data, interval='5m')
         
-        # Output para GitHub Actions
         if os.getenv('GITHUB_ACTIONS'):
             print(f"\n::set-output name=success_count::{len(summary['success'])}")
             print(f"::set-output name=failed_count::{len(summary['failed'])}")
-            
-            print(f"\n### 📈 Resumo Coleta B3")
+            print(f"\n### 📈 Resumo Coleta B3 (Horário BRT)")
             print(f"- ✅ Sucesso: {len(summary['success'])} ativos")
             print(f"- ❌ Falhas: {len(summary['failed'])} ativos")
-            print(f"\n**Ativos processados:**")
             for s in summary['success']:
-                print(f"- {s['ticker']}: {s['records']} registros")
+                print(f"- {s['ticker']}: {s['records']} registros ({s['time_range']})")
         
         return summary
     
@@ -241,6 +238,7 @@ class B3GitHubScraper:
         results = {}
         
         print(f"🚀 Iniciando coleta B3 - {datetime.now()}")
+        print(f"🌎 Fuso horário: BRT (Brasília, UTC-3)")
         print(f"📋 Ativos: {', '.join(tickers)}")
         print(f"⏱️ Intervalo: {interval}")
         print(f"📝 Formato: Ticker,Date,Time,Open,High,Low,Close,Volume")
@@ -263,13 +261,13 @@ class B3GitHubScraper:
         elif failed > 0:
             print(f"⚠️ {failed} ativos falharam, mas continuando...")
         
+        print(f"\n✅ Coleta finalizada! Horários em BRT (10:00-17:00 pregão)")
         return 0
 
 
 def main():
-    """Entry point para CLI"""
     import argparse
-    parser = argparse.ArgumentParser(description='B3 Intraday Scraper para AmiBroker')
+    parser = argparse.ArgumentParser(description='B3 Intraday Scraper para AmiBroker (BRT)')
     parser.add_argument('--interval', default='5m', help='Timeframe (1m, 5m, 15m, 1h)')
     parser.add_argument('--tickers', nargs='+', help='Lista de tickers específicos')
     parser.add_argument('--data-dir', default='data/intraday', help='Diretório de saída')
