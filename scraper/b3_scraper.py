@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 B3 Intraday Scraper - GitHub Actions Edition
-Automação de dados para AmiBroker
+Formatação compatível com AmiBroker (Ticker em todas as linhas)
 """
 
 import yfinance as yf
@@ -19,14 +19,12 @@ class B3GitHubScraper:
         self.data_dir.mkdir(parents=True, exist_ok=True)
         
         # Lista de ativos da B3 para monitorar
-        # Pode ser configurada via variável de ambiente
         self.default_tickers = [
             'PETR4', 'VALE3', 'ITUB4', 'BBDC4', 'ABEV3',
             'WEGE3', 'RENT3', 'LREN3', 'PRIO3', 'SUZB3',
             'RADL3', 'RAIL3', 'BBAS3', 'VIVT3', 'TOTS3'
         ]
         
-        # Carrega configuração se existir
         self.config = self._load_config()
     
     def _load_config(self):
@@ -36,7 +34,6 @@ class B3GitHubScraper:
             with open(config_file) as f:
                 return json.load(f)
         
-        # Ou usa variável de ambiente
         env_tickers = os.getenv('B3_TICKERS', '')
         if env_tickers:
             return {'tickers': env_tickers.split(',')}
@@ -73,7 +70,7 @@ class B3GitHubScraper:
                     interval=interval,
                     progress=False,
                     auto_adjust=False,
-                    threads=False  # Importante para CI/CD
+                    threads=False
                 )
                 
                 if data.empty:
@@ -94,7 +91,7 @@ class B3GitHubScraper:
             except Exception as e:
                 print(f"❌ Tentativa {attempt+1} falhou: {e}")
                 if attempt < max_retries - 1:
-                    time.sleep(5)  # Aguarda antes de retry
+                    time.sleep(5)
                 else:
                     print(f"🚫 Falha definitiva em {ticker}")
                     return None
@@ -102,12 +99,13 @@ class B3GitHubScraper:
     def export_amibroker_format(self, df, ticker, interval='5m'):
         """
         Exporta no formato ASCII compatível com AmiBroker
-        Formato: Date, Time, Open, High, Low, Close, Volume
+        Formato: Ticker, Date, Time, Open, High, Low, Close, Volume
+        
+        IMPORTANTE: Ticker é obrigatório em todas as linhas para importação correta!
         """
         if df is None or df.empty:
             return None
         
-        # Prepara dados
         df_export = df.copy()
         
         # Garante colunas necessárias
@@ -116,14 +114,19 @@ class B3GitHubScraper:
             print(f"❌ Colunas necessárias não encontradas em {ticker}")
             return None
         
+        # ============================================================
+        # ADICIONA TICKER EM TODAS AS LINHAS (ESSENCIAL PARA AMIBROKER)
+        # ============================================================
+        df_export.insert(0, 'Ticker', ticker.upper())
+        
         # Formata data e hora
         df_export['Date'] = df_export.index.strftime('%Y-%m-%d')
         df_export['Time'] = df_export.index.strftime('%H:%M:%S')
         
-        # Reordena
-        df_export = df_export[['Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume']]
+        # Reordena: Ticker, Date, Time, Open, High, Low, Close, Volume
+        df_export = df_export[['Ticker', 'Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume']]
         
-        # Nome do arquivo: TICKER_INTERVAL_YYYYMMDD.txt
+        # Nome do arquivo
         date_suffix = datetime.now().strftime('%Y%m%d')
         filename = f"{ticker}_{interval}_{date_suffix}.txt"
         filepath = self.data_dir / filename
@@ -131,16 +134,59 @@ class B3GitHubScraper:
         # Exporta sem cabeçalho (formato AmiBroker puro)
         df_export.to_csv(filepath, index=False, header=False, sep=',')
         
-        # Também cria versão consolidada (append)
+        # ============================================================
+        # CONSOLIDADO COM TICKER EM TODAS AS LINHAS
+        # ============================================================
         consolidated = self.data_dir / f"{ticker}_{interval}_consolidated.txt"
-        header = not consolidated.exists()
-        df_export.to_csv(consolidated, index=False, header=header, sep=',', mode='a')
         
-        print(f"💾 Salvo: {filename} ({len(df)} linhas)")
+        # Se arquivo existe, carrega e remove duplicatas de data/hora
+        if consolidated.exists():
+            existing = pd.read_csv(consolidated, header=None, names=['Ticker', 'Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume'])
+            combined = pd.concat([existing, df_export], ignore_index=True)
+            # Remove duplicatas baseado em Date + Time (mantém último)
+            combined = combined.drop_duplicates(subset=['Date', 'Time'], keep='last')
+            combined.to_csv(consolidated, index=False, header=False, sep=',')
+        else:
+            df_export.to_csv(consolidated, index=False, header=False, sep=',')
+        
+        print(f"💾 Salvo: {filename} ({len(df)} linhas) | Ticker em todas as linhas ✅")
+        return filepath
+    
+    def generate_unified_file(self, all_data, interval='5m'):
+        """
+        Gera arquivo unificado com todos os tickers (multi-asset)
+        Formato: Ticker, Date, Time, Open, High, Low, Close, Volume
+        """
+        if not all_data:
+            return None
+        
+        unified_df = pd.concat(all_data.values(), ignore_index=True)
+        
+        # Ordena por Ticker e Data/Hora
+        unified_df = unified_df.sort_values(['Ticker', 'Date', 'Time'])
+        
+        filename = f"UNIFIED_ALL_{interval}_{datetime.now().strftime('%Y%m%d')}.txt"
+        filepath = self.data_dir / filename
+        
+        unified_df.to_csv(filepath, index=False, header=False, sep=',')
+        print(f"🗂️  Arquivo unificado criado: {filename} ({len(unified_df)} registros totais)")
+        
+        # Atualiza consolidated unificado
+        consolidated_unified = self.data_dir / f"UNIFIED_ALL_{interval}_consolidated.txt"
+        if consolidated_unified.exists():
+            existing = pd.read_csv(consolidated_unified, header=None, 
+                                 names=['Ticker', 'Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume'])
+            combined = pd.concat([existing, unified_df], ignore_index=True)
+            combined = combined.drop_duplicates(subset=['Ticker', 'Date', 'Time'], keep='last')
+            combined = combined.sort_values(['Ticker', 'Date', 'Time'])
+            combined.to_csv(consolidated_unified, index=False, header=False, sep=',')
+        else:
+            unified_df.to_csv(consolidated_unified, index=False, header=False, sep=',')
+        
         return filepath
     
     def generate_summary(self, results):
-        """Gera resumo da execução para o GitHub Actions"""
+        """Gera resumo da execução"""
         summary = {
             'timestamp': datetime.now().isoformat(),
             'total_tickers': len(self.config['tickers']),
@@ -148,6 +194,7 @@ class B3GitHubScraper:
             'failed': []
         }
         
+        all_data = {}
         for ticker, df in results.items():
             if df is not None:
                 summary['success'].append({
@@ -155,6 +202,13 @@ class B3GitHubScraper:
                     'records': len(df),
                     'date_range': f"{df.index[0]} a {df.index[-1]}"
                 })
+                # Guarda para arquivo unificado
+                df_copy = df.copy()
+                df_copy.insert(0, 'Ticker', ticker.upper())
+                df_copy['Date'] = df_copy.index.strftime('%Y-%m-%d')
+                df_copy['Time'] = df_copy.index.strftime('%H:%M:%S')
+                df_copy = df_copy[['Ticker', 'Date', 'Time', 'Open', 'High', 'Low', 'Close', 'Volume']]
+                all_data[ticker] = df_copy
             else:
                 summary['failed'].append(ticker)
         
@@ -163,12 +217,15 @@ class B3GitHubScraper:
         with open(summary_file, 'w') as f:
             json.dump(summary, f, indent=2, default=str)
         
+        # Gera arquivo unificado se houver dados
+        if all_data:
+            self.generate_unified_file(all_data, interval='5m')
+        
         # Output para GitHub Actions
         if os.getenv('GITHUB_ACTIONS'):
             print(f"\n::set-output name=success_count::{len(summary['success'])}")
             print(f"::set-output name=failed_count::{len(summary['failed'])}")
             
-            # MarkDown summary para GitHub
             print(f"\n### 📈 Resumo Coleta B3")
             print(f"- ✅ Sucesso: {len(summary['success'])} ativos")
             print(f"- ❌ Falhas: {len(summary['failed'])} ativos")
@@ -186,19 +243,19 @@ class B3GitHubScraper:
         print(f"🚀 Iniciando coleta B3 - {datetime.now()}")
         print(f"📋 Ativos: {', '.join(tickers)}")
         print(f"⏱️ Intervalo: {interval}")
-        print("=" * 50)
+        print(f"📝 Formato: Ticker,Date,Time,Open,High,Low,Close,Volume")
+        print("=" * 60)
         
         for ticker in tickers:
             df = self.fetch_intraday(ticker, interval)
             if df is not None:
                 self.export_amibroker_format(df, ticker, interval)
             results[ticker] = df
-            time.sleep(2)  # Respeita rate limit entre requisições
+            time.sleep(2)
         
-        print("\n" + "=" * 50)
+        print("\n" + "=" * 60)
         summary = self.generate_summary(results)
         
-        # Retorna exit code apropriado
         failed = len(summary['failed'])
         if failed == len(tickers):
             print("🚨 Todos os ativos falharam!")
@@ -212,7 +269,7 @@ class B3GitHubScraper:
 def main():
     """Entry point para CLI"""
     import argparse
-    parser = argparse.ArgumentParser(description='B3 Intraday Scraper')
+    parser = argparse.ArgumentParser(description='B3 Intraday Scraper para AmiBroker')
     parser.add_argument('--interval', default='5m', help='Timeframe (1m, 5m, 15m, 1h)')
     parser.add_argument('--tickers', nargs='+', help='Lista de tickers específicos')
     parser.add_argument('--data-dir', default='data/intraday', help='Diretório de saída')
