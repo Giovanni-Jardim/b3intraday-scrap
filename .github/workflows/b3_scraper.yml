@@ -1,0 +1,111 @@
+name: B3 Intraday Data Scraper
+
+on:
+  # Executa automaticamente em horários específicos (UTC-3 = horário de Brasília)
+  schedule:
+    # Dias úteis (segunda a sexta) às 21:00 BRT (00:00 UTC do dia seguinte)
+    - cron: '0 0 * * 1-5'
+    # Também às 23:30 BRT para pegar fechamento do after-market
+    - cron: '30 2 * * 1-5'
+  
+  # Permite execução manual via botão "Run workflow"
+  workflow_dispatch:
+    inputs:
+      interval:
+        description: 'Timeframe para coleta'
+        required: true
+        default: '5m'
+        type: choice
+        options:
+          - '1m'
+          - '5m'
+          - '15m'
+          - '30m'
+          - '1h'
+      tickers:
+        description: 'Tickers específicos (separados por vírgula, deixe vazio para padrão)'
+        required: false
+        default: ''
+
+jobs:
+  scrape-b3:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      # 1. Checkout do repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Permite commit dos dados depois
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      # 2. Setup Python
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      # 3. Instala dependências
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r scraper/requirements.txt
+      
+      # 4. Executa o scraper
+      - name: Run B3 Scraper
+        env:
+          # Configurações via variáveis de ambiente
+          B3_TICKERS: ${{ github.event.inputs.tickers || 'PETR4,VALE3,ITUB4,BBDC4,ABEV3,WEGE3,RENT3,LREN3' }}
+        run: |
+          python scraper/b3_scraper.py \
+            --interval ${{ github.event.inputs.interval || '5m' }} \
+            --data-dir data/intraday
+      
+      # 5. Verifica se há dados novos para commit
+      - name: Check for changes
+        id: verify-changed-files
+        run: |
+          if [ -n "$(git status --porcelain data/)" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+      
+      # 6. Commit e push dos dados (se houver mudanças)
+      - name: Commit data changes
+        if: steps.verify-changed-files.outputs.changed == 'true'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          
+          # Adiciona apenas arquivos de dados
+          git add data/
+          
+          # Commit com timestamp
+          git commit -m "📊 Auto-update: Dados intraday B3 $(date +'%Y-%m-%d %H:%M')"
+          
+          # Push
+          git push
+      
+      # 7. Upload artifacts (backup dos dados)
+      - name: Upload data artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: b3-intraday-data-${{ github.run_id }}
+          path: data/intraday/
+          retention-days: 30
+      
+      # 8. Notificação de sucesso/falha (opcional)
+      - name: Create issue on failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.name,
+              title: `🚨 Falha na coleta B3 - ${new Date().toISOString().split('T')[0]}`,
+              body: `Workflow falhou na execução: ${context.runId}\nVerifique os logs em: ${context.serverUrl}/${context.repo.owner}/${context.repo.name}/actions/runs/${context.runId}`
+            })
