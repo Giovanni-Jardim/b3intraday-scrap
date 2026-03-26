@@ -22,3 +22,6 @@ Thumbs.db
 # Mas ignorar caches temporários
 *.tmp
 *.log
+
+*
+!.gitignore
