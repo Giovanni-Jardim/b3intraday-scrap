@@ -1,0 +1,629 @@
+{
+  "timestamp": "2026-03-26T14:53:14.219312",
+  "total_tickers": 106,
+  "success": [
+    {
+      "ticker": "ABCB4",
+      "records": 1674,
+      "date_range": "2026-03-20 10:02:00 a 2026-03-26 11:33:00",
+      "time_range": "10:02 - 11:33 BRT"
+    },
+    {
+      "ticker": "ABEV3",
+      "records": 1721,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "AGRO3",
+      "records": 1352,
+      "date_range": "2026-03-20 10:01:00 a 2026-03-26 11:33:00",
+      "time_range": "10:01 - 11:33 BRT"
+    },
+    {
+      "ticker": "ALOS3",
+      "records": 1722,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "ALPA4",
+      "records": 1734,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:33:00",
+      "time_range": "10:03 - 11:33 BRT"
+    },
+    {
+      "ticker": "ANIM3",
+      "records": 1706,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "ASAI3",
+      "records": 1709,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "AZZA3",
+      "records": 1724,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "B3SA3",
+      "records": 1713,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "BBAS3",
+      "records": 1732,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "BBDC3",
+      "records": 1725,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "BBDC4",
+      "records": 1719,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:34:00",
+      "time_range": "10:09 - 11:34 BRT"
+    },
+    {
+      "ticker": "BBSE3",
+      "records": 1736,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:33:00",
+      "time_range": "10:03 - 11:33 BRT"
+    },
+    {
+      "ticker": "BEEF3",
+      "records": 1720,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "BPAC11",
+      "records": 1713,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "BRAP4",
+      "records": 1681,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "BRAV3",
+      "records": 1721,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "BRKM5",
+      "records": 1713,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "BRSR6",
+      "records": 1689,
+      "date_range": "2026-03-20 10:11:00 a 2026-03-26 11:34:00",
+      "time_range": "10:11 - 11:34 BRT"
+    },
+    {
+      "ticker": "CAML3",
+      "records": 1475,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:33:00",
+      "time_range": "10:03 - 11:33 BRT"
+    },
+    {
+      "ticker": "CASH3",
+      "records": 1604,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "CBAV3",
+      "records": 1609,
+      "date_range": "2026-03-20 10:00:00 a 2026-03-26 11:34:00",
+      "time_range": "10:00 - 11:34 BRT"
+    },
+    {
+      "ticker": "CEAB3",
+      "records": 1716,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:34:00",
+      "time_range": "10:07 - 11:34 BRT"
+    },
+    {
+      "ticker": "CMIG4",
+      "records": 1712,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:34:00",
+      "time_range": "10:09 - 11:34 BRT"
+    },
+    {
+      "ticker": "CMIN3",
+      "records": 1725,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "COGN3",
+      "records": 1720,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:34:00",
+      "time_range": "10:03 - 11:34 BRT"
+    },
+    {
+      "ticker": "CPFE3",
+      "records": 1735,
+      "date_range": "2026-03-20 10:02:00 a 2026-03-26 11:34:00",
+      "time_range": "10:02 - 11:34 BRT"
+    },
+    {
+      "ticker": "CPLE3",
+      "records": 1731,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "CSAN3",
+      "records": 1723,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "CSMG3",
+      "records": 1728,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "CSNA3",
+      "records": 1709,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "CURY3",
+      "records": 1728,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "CVCB3",
+      "records": 1722,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "CYRE3",
+      "records": 1690,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "DIRR3",
+      "records": 1719,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "DXCO3",
+      "records": 1635,
+      "date_range": "2026-03-20 10:02:00 a 2026-03-26 11:34:00",
+      "time_range": "10:02 - 11:34 BRT"
+    },
+    {
+      "ticker": "ECOR3",
+      "records": 1712,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:35:00",
+      "time_range": "10:09 - 11:35 BRT"
+    },
+    {
+      "ticker": "ENEV3",
+      "records": 1728,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "ENGI11",
+      "records": 1726,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:35:00",
+      "time_range": "10:07 - 11:35 BRT"
+    },
+    {
+      "ticker": "EQTL3",
+      "records": 1724,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "EZTC3",
+      "records": 1705,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:35:00",
+      "time_range": "10:07 - 11:35 BRT"
+    },
+    {
+      "ticker": "FLRY3",
+      "records": 1691,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:35:00",
+      "time_range": "10:09 - 11:35 BRT"
+    },
+    {
+      "ticker": "GGBR4",
+      "records": 1710,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:35:00",
+      "time_range": "10:07 - 11:35 BRT"
+    },
+    {
+      "ticker": "GGPS3",
+      "records": 1706,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:35:00",
+      "time_range": "10:09 - 11:35 BRT"
+    },
+    {
+      "ticker": "GMAT3",
+      "records": 1724,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "GOAU4",
+      "records": 1727,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "GRND3",
+      "records": 1685,
+      "date_range": "2026-03-20 10:02:00 a 2026-03-26 11:35:00",
+      "time_range": "10:02 - 11:35 BRT"
+    },
+    {
+      "ticker": "HAPV3",
+      "records": 1680,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:35:00",
+      "time_range": "10:07 - 11:35 BRT"
+    },
+    {
+      "ticker": "HYPE3",
+      "records": 1724,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "ITSA4",
+      "records": 1722,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:35:00",
+      "time_range": "10:07 - 11:35 BRT"
+    },
+    {
+      "ticker": "ITUB3",
+      "records": 1719,
+      "date_range": "2026-03-20 10:11:00 a 2026-03-26 11:35:00",
+      "time_range": "10:11 - 11:35 BRT"
+    },
+    {
+      "ticker": "ITUB4",
+      "records": 1723,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:36:00",
+      "time_range": "10:07 - 11:36 BRT"
+    },
+    {
+      "ticker": "JHSF3",
+      "records": 1713,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:36:00",
+      "time_range": "10:09 - 11:36 BRT"
+    },
+    {
+      "ticker": "KEPL3",
+      "records": 1648,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "KLBN11",
+      "records": 1718,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "LJQQ3",
+      "records": 1536,
+      "date_range": "2026-03-20 10:00:00 a 2026-03-26 11:35:00",
+      "time_range": "10:00 - 11:35 BRT"
+    },
+    {
+      "ticker": "LREN3",
+      "records": 1721,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "LWSA3",
+      "records": 1665,
+      "date_range": "2026-03-20 10:00:00 a 2026-03-26 11:35:00",
+      "time_range": "10:00 - 11:35 BRT"
+    },
+    {
+      "ticker": "MDIA3",
+      "records": 1437,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "MGLU3",
+      "records": 1714,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:36:00",
+      "time_range": "10:07 - 11:36 BRT"
+    },
+    {
+      "ticker": "MOTV3",
+      "records": 1721,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "MOVI3",
+      "records": 1716,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "MRVE3",
+      "records": 1715,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:36:00",
+      "time_range": "10:07 - 11:36 BRT"
+    },
+    {
+      "ticker": "NEOE3",
+      "records": 1552,
+      "date_range": "2026-03-20 10:02:00 a 2026-03-26 11:36:00",
+      "time_range": "10:02 - 11:36 BRT"
+    },
+    {
+      "ticker": "ONCO3",
+      "records": 1466,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:36:00",
+      "time_range": "10:09 - 11:36 BRT"
+    },
+    {
+      "ticker": "PCAR3",
+      "records": 1546,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "PETR3",
+      "records": 1724,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "PETR4",
+      "records": 1722,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "PGMN3",
+      "records": 1726,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:36:00",
+      "time_range": "10:07 - 11:36 BRT"
+    },
+    {
+      "ticker": "PLPL3",
+      "records": 1721,
+      "date_range": "2026-03-20 10:01:00 a 2026-03-26 11:36:00",
+      "time_range": "10:01 - 11:36 BRT"
+    },
+    {
+      "ticker": "POMO4",
+      "records": 1734,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "POSI3",
+      "records": 1449,
+      "date_range": "2026-03-20 10:05:00 a 2026-03-26 11:36:00",
+      "time_range": "10:05 - 11:36 BRT"
+    },
+    {
+      "ticker": "PRIO3",
+      "records": 1716,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:36:00",
+      "time_range": "10:09 - 11:36 BRT"
+    },
+    {
+      "ticker": "PSSA3",
+      "records": 1729,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:36:00",
+      "time_range": "10:07 - 11:36 BRT"
+    },
+    {
+      "ticker": "QUAL3",
+      "records": 1671,
+      "date_range": "2026-03-20 10:02:00 a 2026-03-26 11:37:00",
+      "time_range": "10:02 - 11:37 BRT"
+    },
+    {
+      "ticker": "RADL3",
+      "records": 1719,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "RAIL3",
+      "records": 1733,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:36:00",
+      "time_range": "10:03 - 11:36 BRT"
+    },
+    {
+      "ticker": "RAIZ4",
+      "records": 1691,
+      "date_range": "2026-03-20 10:01:00 a 2026-03-26 11:36:00",
+      "time_range": "10:01 - 11:36 BRT"
+    },
+    {
+      "ticker": "RAPT4",
+      "records": 1720,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:37:00",
+      "time_range": "10:09 - 11:37 BRT"
+    },
+    {
+      "ticker": "RDOR3",
+      "records": 1721,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:37:00",
+      "time_range": "10:07 - 11:37 BRT"
+    },
+    {
+      "ticker": "RECV3",
+      "records": 1722,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:35:00",
+      "time_range": "10:03 - 11:35 BRT"
+    },
+    {
+      "ticker": "RENT3",
+      "records": 1723,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "SANB11",
+      "records": 1726,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "SAPR11",
+      "records": 1719,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "SBSP3",
+      "records": 1711,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:37:00",
+      "time_range": "10:07 - 11:37 BRT"
+    },
+    {
+      "ticker": "SEER3",
+      "records": 1663,
+      "date_range": "2026-03-20 10:00:00 a 2026-03-26 11:37:00",
+      "time_range": "10:00 - 11:37 BRT"
+    },
+    {
+      "ticker": "SIMH3",
+      "records": 1717,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "SLCE3",
+      "records": 1736,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "SMFT3",
+      "records": 1727,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "SMTO3",
+      "records": 1649,
+      "date_range": "2026-03-20 10:02:00 a 2026-03-26 11:37:00",
+      "time_range": "10:02 - 11:37 BRT"
+    },
+    {
+      "ticker": "SUZB3",
+      "records": 1730,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "TAEE11",
+      "records": 1738,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "TIMS3",
+      "records": 1714,
+      "date_range": "2026-03-20 10:09:00 a 2026-03-26 11:37:00",
+      "time_range": "10:09 - 11:37 BRT"
+    },
+    {
+      "ticker": "TOTS3",
+      "records": 1715,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:37:00",
+      "time_range": "10:07 - 11:37 BRT"
+    },
+    {
+      "ticker": "UGPA3",
+      "records": 1724,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:37:00",
+      "time_range": "10:07 - 11:37 BRT"
+    },
+    {
+      "ticker": "USIM5",
+      "records": 1727,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "VALE3",
+      "records": 1722,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "VAMO3",
+      "records": 1722,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "VBBR3",
+      "records": 1729,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "VIVA3",
+      "records": 1724,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:37:00",
+      "time_range": "10:03 - 11:37 BRT"
+    },
+    {
+      "ticker": "VIVT3",
+      "records": 1733,
+      "date_range": "2026-03-20 10:07:00 a 2026-03-26 11:37:00",
+      "time_range": "10:07 - 11:37 BRT"
+    },
+    {
+      "ticker": "WEGE3",
+      "records": 1726,
+      "date_range": "2026-03-20 10:03:00 a 2026-03-26 11:38:00",
+      "time_range": "10:03 - 11:38 BRT"
+    },
+    {
+      "ticker": "YDUQ3",
+      "records": 1704,
+      "date_range": "2026-03-20 10:04:00 a 2026-03-26 11:37:00",
+      "time_range": "10:04 - 11:37 BRT"
+    }
+  ],
+  "failed": [
+    "EMBR3",
+    "MRFG3",
+    "NTCO3"
+  ]
+}
