@@ -3,7 +3,7 @@
 B3 Intraday Scraper - GitHub Actions Edition
 Corrigido: Conversão correta UTC → BRT (Brasília)
 """
-
+import os
 import yfinance as yf
 import pandas as pd
 from datetime import datetime
