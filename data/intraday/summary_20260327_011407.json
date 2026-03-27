@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-03-27T01:14:07.772120",
+  "total_tickers": 1,
+  "success": [
+    {
+      "ticker": "ALOS3",
+      "records": 1641,
+      "date_range": "2026-02-27 10:00:00 a 2026-03-26 16:50:00",
+      "time_range": "10:00 - 16:50 BRT"
+    }
+  ],
+  "failed": []
+}
