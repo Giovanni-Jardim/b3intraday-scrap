@@ -23,5 +23,4 @@ Thumbs.db
 *.tmp
 *.log
 
-*
-!.gitignore
+
