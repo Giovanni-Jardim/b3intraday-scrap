@@ -3,7 +3,7 @@
 B3 Intraday Scraper - GitHub Actions Edition
 Corrigido: Conversão correta UTC → BRT (Brasília)
 """
-import os
+
 import yfinance as yf
 import pandas as pd
 from datetime import datetime
@@ -222,14 +222,8 @@ class B3GitHubScraper:
             self.generate_unified_file(all_data, interval='5m')
         
         if os.getenv('GITHUB_ACTIONS'):
-            # NOVO FORMATO: Usando Environment Files
-            github_output = os.getenv('GITHUB_OUTPUT')
-            if github_output:
-                with open(github_output, 'a') as f:
-                    f.write(f"success_count={len(summary['success'])}\n")
-                    f.write(f"failed_count={len(summary['failed'])}\n")
-            
-            # Output para o log (mantido para visualização)
+            print(f"\n::set-output name=success_count::{len(summary['success'])}")
+            print(f"::set-output name=failed_count::{len(summary['failed'])}")
             print(f"\n### 📈 Resumo Coleta B3 (Horário BRT)")
             print(f"- ✅ Sucesso: {len(summary['success'])} ativos")
             print(f"- ❌ Falhas: {len(summary['failed'])} ativos")
