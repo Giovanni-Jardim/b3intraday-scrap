@@ -1,0 +1,13 @@
+{
+  "timestamp": "2026-04-13T22:30:39.196096",
+  "total_tickers": 1,
+  "success": [
+    {
+      "ticker": "RIAA3",
+      "records": 1646,
+      "date_range": "2026-03-16 10:00:00 a 2026-04-13 16:50:00",
+      "time_range": "10:00 - 16:50 BRT"
+    }
+  ],
+  "failed": []
+}
